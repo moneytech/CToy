@@ -1,4 +1,3 @@
-#include <ctoy.h>
 
 #define CTOY_SAMPLE 1 // change me
 
@@ -23,5 +22,8 @@
 
 #elif CTOY_SAMPLE == 7
 #include "sample/imgui_hello.c"
+
+#elif CTOY_SAMPLE == 8
+#include "sample/bomber.c"
 
 #endif

@@ -99,6 +99,8 @@ int            ctoy__prev_win_width = 0;
 int            ctoy__prev_win_height = 0;
 int            ctoy__win_width = 0;
 int            ctoy__win_height = 0;
+int            ctoy__fb_width = 0;
+int            ctoy__fb_height = 0;
 int            ctoy__tex_width = 0;
 int            ctoy__tex_height = 0;
 char           **ctoy__argv;
@@ -336,6 +338,8 @@ static int ctoy__window_init(const char *title, int fullscreen)
    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
    glPixelStorei(GL_PACK_ALIGNMENT, 1);
    glEnable(GL_TEXTURE_2D);
+
+   glfwGetFramebufferSize(ctoy__window, &ctoy__fb_width, &ctoy__fb_height);
    
    return 1;
 }
@@ -465,6 +469,8 @@ static void ctoy__update(void)
    ctoy__scroll_y = 0;
 
    glfwPollEvents();
+   
+   glfwGetFramebufferSize(ctoy__window, &ctoy__fb_width, &ctoy__fb_height);
 
    ctoy__t++;
 }
@@ -582,6 +588,16 @@ float ctoy_joystick_axis(int joy, int axis)
    return ctoy__joystick_axis[joy][axis];
 }
 
+static GLenum comp_to_gl_format(int comp)
+{
+	switch (comp) {
+	default:
+	case 1: return GL_LUMINANCE;
+	case 3: return GL_RGB;
+	case 4: return GL_RGBA;
+	}
+}
+
 void ctoy_render_image(struct m_image *image)
 {
    if (image->width != ctoy__tex_width || image->height != ctoy__tex_height)
@@ -591,14 +607,14 @@ void ctoy_render_image(struct m_image *image)
 
    if (image->type == M_FLOAT) {
       m_image_float_to_srgb(&ctoy__buffer_ubyte, image);
-      glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, ctoy__buffer_ubyte.width, ctoy__buffer_ubyte.height, image->comp == 3 ? GL_RGB : GL_LUMINANCE, GL_UNSIGNED_BYTE, ctoy__buffer_ubyte.data);
+      glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, ctoy__buffer_ubyte.width, ctoy__buffer_ubyte.height, comp_to_gl_format(image->comp), GL_UNSIGNED_BYTE, ctoy__buffer_ubyte.data);
    }
    else if (image->type == M_UBYTE) {
-      glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, image->width, image->height, image->comp == 3 ? GL_RGB : GL_LUMINANCE, GL_UNSIGNED_BYTE, image->data);
+      glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, image->width, image->height, comp_to_gl_format(image->comp), GL_UNSIGNED_BYTE, image->data);
    }
    
-   glScissor(0, 0, ctoy__win_width, ctoy__win_height);
-   glViewport(0, 0, ctoy__win_width, ctoy__win_height);
+   glScissor(0, 0, ctoy__fb_width, ctoy__fb_height);
+   glViewport(0, 0, ctoy__fb_width, ctoy__fb_height);
    ctoy__draw_texture(ctoy__texture);
 }
 
@@ -664,6 +680,16 @@ int ctoy_window_width(void)
 int ctoy_window_height(void)
 {
    return ctoy__win_height;
+}
+
+int ctoy_frame_buffer_width(void)
+{
+   return ctoy__fb_width;
+}
+
+int ctoy_frame_buffer_height(void)
+{
+   return ctoy__fb_height;
 }
 
 int ctoy_width(void)

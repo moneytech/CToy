@@ -206,6 +206,8 @@ void ctoy__symbols(void)
    tcc_add_symbol(ctoy__tcc, "ctoy_t", ctoy_t);
    tcc_add_symbol(ctoy__tcc, "ctoy_window_width", ctoy_window_width);
    tcc_add_symbol(ctoy__tcc, "ctoy_window_height", ctoy_window_height);
+   tcc_add_symbol(ctoy__tcc, "ctoy_frame_buffer_width", ctoy_frame_buffer_width);
+   tcc_add_symbol(ctoy__tcc, "ctoy_frame_buffer_height", ctoy_frame_buffer_height);
    tcc_add_symbol(ctoy__tcc, "ctoy_mouse_x", ctoy_mouse_x);
    tcc_add_symbol(ctoy__tcc, "ctoy_mouse_y", ctoy_mouse_y);
    tcc_add_symbol(ctoy__tcc, "ctoy_scroll_x", ctoy_scroll_x);
@@ -300,6 +302,7 @@ void ctoy__maratis_symbols(void)
    tcc_add_symbol(ctoy__tcc, "m_mat4_transform3", m_mat4_transform3);
    tcc_add_symbol(ctoy__tcc, "m_mat4_transform4", m_mat4_transform4);
 
+   tcc_add_symbol(ctoy__tcc, "m_type_sizeof", m_type_sizeof);
    tcc_add_symbol(ctoy__tcc, "m_image_create", m_image_create);
    tcc_add_symbol(ctoy__tcc, "m_image_destroy", m_image_destroy);
    tcc_add_symbol(ctoy__tcc, "m_image_ubyte_to_float", m_image_ubyte_to_float);
@@ -446,7 +449,9 @@ void ctoy__add_libs(void)
             tcc_add_file(ctoy__tcc, filename, TCC_FILETYPE_BINARY);
 #else
             dlopen(filename, RTLD_LAZY);
+	#ifndef __APPLE__
             tcc_add_file(ctoy__tcc, filename, TCC_FILETYPE_BINARY);
+	#endif
 #endif
          }
       }
@@ -492,7 +497,6 @@ int ctoy__tcc_init(void)
    tcc_add_library(ctoy__tcc, "msvcrt");
    tcc_add_library(ctoy__tcc, "opengl32");
    tcc_add_library(ctoy__tcc, "OpenAL32");
-   //tcc_set_options(ctoy__tcc, "-Wl,--stack=8388608");
 #endif
    ctoy__add_libs();
 

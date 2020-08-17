@@ -3,7 +3,7 @@ C-Toy
 
 C-Toy is an interactive C(99) coding environment based on [TCC](http://bellard.org/tcc/).
 
-Small, simple, no bullshit. Write cross-platform C code and see the result immediately. No installation or compiler required, download (~2mb), unzip, run CToy and play. Ready for Windows, MacOSX and Linux. Ideal for prototyping, learning, teaching...
+Small, simple, no bullshit. Write cross-platform C code and see the result immediately. No installation or compiler required, download (<4mb), unzip, run CToy and play. Ready for Windows, MacOSX and Linux. Ideal for prototyping, learning, teaching...
 
 Features
 --------
@@ -14,17 +14,22 @@ Features
 * Image processing with [MaratisTCL](https://github.com/anael-seghezzi/Maratis-Tiny-C-library)
 * OpenGLES-2
 * OpenAL
+* Portable pen-tablet support (Wacom, etc)
 * Use C-symbols from native dynamic libraries (*.dll etc) : just copy libraries in your_ctoy_path/lib/
+* Pre-built Dear-Imgui suport (https://github.com/ocornut/imgui)
 * Can also compile your project with other compilers (CMake script for gcc, vs, mingw)
 * Emscripten compatible
 
 Download
 --------
 
-[- CToy 1.01 Win64](http://anael.maratis3d.com/ctoy/bin/CToy-1.01-WIN-x86_64.zip)<br>
-[- CToy 1.01 MacOSX](http://anael.maratis3d.com/ctoy/bin/CToy-1.01-OSX_10.6-x86_64.zip)<br>
-[- CToy 1.01 Linux64](http://anael.maratis3d.com/ctoy/bin/CToy-1.01-LINUX-x86_64.zip)<br>
+[- CToy 1.05 Win64](http://anael.maratis3d.com/ctoy/bin/CToy-1.05-WIN-x86_64.zip)<br>
+[- CToy 1.05 MacOSX](http://anael.maratis3d.com/ctoy/bin/CToy-1.05-OSX_10.6-x86_64.zip)<br>
+[- CToy 1.05 Linux64](http://anael.maratis3d.com/ctoy/bin/CToy-1.05-Linux64-x86_64.zip)<br>
 [- [all versions]](http://anael.maratis3d.com/ctoy/bin/)
+
+Requirement for Win64: Microsoft Visual C++ 2015 Redistributable<br> https://www.microsoft.com/fr-fr/download/details.aspx?id=48145 <br>
+Requirement For Linux: OpenAL
 
 Getting started
 ---------------
@@ -88,7 +93,7 @@ void ctoy_main_loop()
 void ctoy_end()
 {}
 ```
-(You can store any data that was manually allocated with malloc, it can be an array or a global pointer. Just avoid storing function pointers, as functions addresses may change after recompiles, or update them after calling ctoy_retrieve_memory.)
+(You can store any data that was manually allocated with malloc, it can be an array or a global pointer. Just avoid storing function pointers, as functions addresses may change after recompiles, or update them after calling ctoy_retrieve_memory)
 
 Documentation
 -------------
@@ -98,6 +103,15 @@ MaratisTCL: https://github.com/anael-seghezzi/Maratis-Tiny-C-library<br>
 OpenGLES2: https://www.khronos.org/registry/OpenGL-Refpages/es2.0/<br>
 OpenAL: https://www.openal.org/documentation/OpenAL_Programmers_Guide.pdf<br>
 
+Tutorials and examples
+----------------------
+
+Wiki: https://github.com/anael-seghezzi/CToy/wiki
+
+License
+-------
+
+CToy is licensed under the zlib/libpng License.
 
 Building CToy from sources (CMake)
 ----------------------------------
